@@ -316,6 +316,56 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+void Graphics::DrawFillCircle(int xCenter, int yCenter, int radius, Color c)
+{
+	const int radius_sq = radius * radius;
+	for (int y_loop = yCenter - radius; y_loop < yCenter + radius+1; y_loop++)
+	{
+		for (int x_loop = xCenter - radius; x_loop < xCenter + radius+1; x_loop++)
+		{
+			if (((x_loop - xCenter) * (x_loop - xCenter) + (y_loop - yCenter) * (y_loop - yCenter)) <= radius_sq)
+			{
+				PutPixel(x_loop, y_loop, c);
+			}
+		}
+	}
+
+}
+
+void Graphics::DrawOuterCircle(int xCenter, int yCenter, int radius, Color c)
+{
+	const int radius_sq = radius * radius;
+	for (int y_loop = yCenter - radius-1; y_loop < yCenter + radius + 1; y_loop++)
+	{
+		for (int x_loop = xCenter - radius-1; x_loop < xCenter + radius + 1; x_loop++)
+		{
+			if (((x_loop - xCenter) * (x_loop - xCenter) + (y_loop - yCenter) * (y_loop - yCenter)) == radius_sq)
+			{
+				PutPixel(x_loop, y_loop, c);
+			}
+		}
+	}
+
+}
+
+void Graphics::DrawDonut(int xCenter, int yCenter, int radius,int radius1, Color c)
+{
+	const int radius_sq = radius * radius;
+	const int radius1_sq = radius1 * radius1;
+	for (int y_loop = yCenter - radius1; y_loop < yCenter + radius1+1; y_loop++)
+	{
+		for (int x_loop = xCenter - radius1; x_loop < xCenter + radius1+1; x_loop++)
+		{
+			if (((x_loop - xCenter) * (x_loop - xCenter) + (y_loop - yCenter) * (y_loop - yCenter)) >= radius_sq &&
+				((x_loop - xCenter) * (x_loop - xCenter) + (y_loop - yCenter) * (y_loop - yCenter)) <= radius1_sq)
+			{
+				PutPixel(x_loop, y_loop, c);
+			}
+		}
+	}
+
+}
+
 void Graphics::DrawRect( int x0,int y0,int x1,int y1,Color c )
 {
 	if( x0 > x1 )
